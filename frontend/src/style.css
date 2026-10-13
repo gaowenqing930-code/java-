@@ -1,0 +1,117 @@
+/* ============================================================
+   AI 智能面试与学习陪练平台 · 全局黑白极简主题
+   ============================================================ */
+
+:root {
+  /* —— 黑白设计令牌 —— */
+  --ink: #0a0a0a;            /* 主黑 */
+  --ink-soft: #1a1a1a;       /* 次级黑 */
+  --paper: #ffffff;          /* 主白 */
+  --paper-warm: #faf9f7;     /* 暖白背景 */
+  --gray-600: #555555;
+  --gray-500: #6b6b6b;
+  --gray-400: #9a9a9a;
+  --line: #e6e6e6;           /* 细线 */
+  --line-strong: #cfcfcf;
+
+  /* 等宽字体（代码感点缀） */
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  /* —— Element Plus 覆盖为黑白色 —— */
+  --el-color-primary: #0a0a0a;
+  --el-color-primary-light-3: #3a3a3a;
+  --el-color-primary-light-5: #6b6b6b;
+  --el-color-primary-light-7: #a6a6a6;
+  --el-color-primary-light-8: #c4c4c4;
+  --el-color-primary-light-9: #f0f0f0;
+  --el-color-primary-dark-2: #000000;
+
+  --el-border-radius-base: 3px;
+  --el-border-radius-small: 2px;
+  --el-border-radius-round: 999px;
+
+  --el-text-color-primary: #0a0a0a;
+  --el-text-color-regular: #333333;
+  --el-text-color-secondary: #6b6b6b;
+  --el-text-color-placeholder: #9a9a9a;
+
+  --el-border-color: #e6e6e6;
+  --el-border-color-light: #ededed;
+  --el-border-color-lighter: #f0f0f0;
+  --el-fill-color-blank: #ffffff;
+  --el-fill-color-light: #f5f5f5;
+  --el-fill-color-lighter: #fafafa;
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #faf9f7;
+  --el-mask-color: rgba(0, 0, 0, 0.5);
+
+  --app-bg: #faf9f7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, 'Helvetica Neue', Helvetica, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  background-color: var(--app-bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.01em;
+}
+
+/* 全局 Element Plus 细节微调：主按钮黑底白字，hover 反转描边 */
+.el-button--primary {
+  --el-button-bg-color: #0a0a0a;
+  --el-button-border-color: #0a0a0a;
+  --el-button-hover-bg-color: #ffffff;
+  --el-button-hover-border-color: #0a0a0a;
+  --el-button-hover-text-color: #0a0a0a;
+  --el-button-active-bg-color: #ffffff;
+  --el-button-active-border-color: #0a0a0a;
+  --el-button-active-text-color: #0a0a0a;
+  --el-button-text-color: #ffffff;
+  border-radius: 3px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  transition: all 0.25s ease;
+}
+
+.el-button--primary.is-plain {
+  --el-button-bg-color: #ffffff;
+  --el-button-border-color: #0a0a0a;
+  --el-button-text-color: #0a0a0a;
+  --el-button-hover-bg-color: #0a0a0a;
+  --el-button-hover-border-color: #0a0a0a;
+  --el-button-hover-text-color: #ffffff;
+}
+
+/* 输入框黑白化 */
+.el-input__wrapper {
+  border-radius: 3px;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 1px #0a0a0a inset !important;
+}
+
+/* 下拉、弹窗等圆角收敛 */
+.el-popper.is-light,
+.el-dropdown__popper {
+  border-radius: 3px;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+}

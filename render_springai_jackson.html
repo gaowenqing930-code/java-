@@ -1,0 +1,41 @@
+<html style="margin:0;padding:0;">
+<div style="background-color:transparent;box-sizing:border-box;font-family:'Roboto','PingFang SC','Segoe UI',Arial,sans-serif;--accent:#9BBBF4;color:#1A1B1C;max-width:680px;margin:0 auto;padding:12px;">
+  <div style="font-size:15px;font-weight:600;color:#1A1B1C;margin-bottom:2px;">Spring AI ↔ Jackson 配合 · 保证大模型输出可反序列化</div>
+  <div style="font-size:12px;color:#6B7280;margin-bottom:14px;">三层链路 · 中间 JSON 文本衔接 · 互不信任（AiQuestionServiceImpl）</div>
+
+  <!-- 层1 Spring AI -->
+  <div style="border-left:3px solid var(--accent);border-radius:10px;padding:10px 14px;margin-bottom:10px;background:#F6F8FC;">
+    <div style="font-weight:600;font-size:13px;color:#1A1B1C;margin-bottom:6px;">① Spring AI · 生成（约束输出格式）</div>
+    <div style="font-size:12.5px;color:#374151;line-height:1.7;">
+      loadTemplate(题型) → 替换 ${knowledgePoint}/${difficulty}/${count}<br/>
+      <code>ChatClient.create(model).prompt().user(prompt).call().content()</code><br/>
+      <span style="font-size:12px;color:#6B7280;">模板写死：只输出 JSON 数组 {stem, options, answer, analysis, scorePoints}</span>
+    </div>
+  </div>
+
+  <!-- 中间 -->
+  <div style="text-align:center;font-size:12px;color:#6B7280;margin:4px 0;">▼ 模型原始文本（含 markdown 围栏 / 多余文字，不可直接信）</div>
+
+  <!-- 层2 Jackson -->
+  <div style="border-left:3px solid #6B7280;border-radius:10px;padding:10px 14px;margin-bottom:10px;background:#FFFFFF;">
+    <div style="font-weight:600;font-size:13px;color:#1A1B1C;margin-bottom:6px;">② Jackson · 契约化（清洗 → 反序列化）</div>
+    <div style="font-size:12.5px;color:#374151;line-height:1.9;">
+      <b>extractJsonArray(content)</b>：剥 markdown 围栏（```json）→ 取首个 [ 到末尾 ] → 干净 JSON<br/>
+      <b>objectMapper.readValue(json, TypeFactory.constructCollectionType(List.class, AiGeneratedQuestion.class))</b><br/>
+      <span style="font-size:12px;color:#6B7280;">TypeFactory 指定泛型元素 → 每项正确映射为题目实体</span>
+    </div>
+  </div>
+
+  <!-- 中间 -->
+  <div style="text-align:center;font-size:12px;color:#6B7280;margin:4px 0;">▼ 题目实体列表 List&lt;AiGeneratedQuestion&gt;</div>
+
+  <!-- 层3 兜底 -->
+  <div style="border-left:3px solid #F4B393;border-radius:10px;padding:10px 14px;background:#FFF8F0;">
+    <div style="font-weight:600;font-size:13px;color:#1A1B1C;margin-bottom:6px;">③ 兜底保障（格式乱也不崩）</div>
+    <div style="font-size:12.5px;color:#374151;line-height:1.9;">
+      逐题 <code>validateAndNormalize</code> 校验（题干/选项/答案/评分点）<br/>
+      解析失败 → 异常重试 maxRetries 次 · 指纹批内+库内去重 · 全败 → 题库兜底抽题
+    </div>
+  </div>
+</div>
+</html>

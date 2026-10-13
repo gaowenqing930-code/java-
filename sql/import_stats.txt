@@ -1,0 +1,2 @@
+types: {"SINGLE": 234, "MULTIPLE": 16}
+skipped (no category): 0

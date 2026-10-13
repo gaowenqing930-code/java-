@@ -1,0 +1,64 @@
+# Tasks
+
+- [x] Task 1: 搭建项目基础框架：初始化 Spring Boot 后端与 Vue3 前端工程，完成统一返回体、全局异常处理、跨域与 MyBatis-Plus 配置
+  - [x] SubTask 1.1: 初始化后端工程（依赖、分层结构、统一返回体 Result、全局异常处理器）
+  - [x] SubTask 1.2: 配置 MySQL 数据源与 MyBatis-Plus（分页插件等）
+  - [x] SubTask 1.3: 初始化 Vue3 + Element Plus 前端工程（路由、Axios 封装、Token 拦截）
+- [x] Task 2: 实现用户认证与权限模块：注册、登录、JWT 签发与校验、角色鉴权
+  - [x] SubTask 2.1: 创建 user 表与实体，实现注册/登录接口（BCrypt 加密）
+  - [x] SubTask 2.2: 实现 JWT 工具类与登录拦截器，统一解析当前用户 ID
+  - [x] SubTask 2.3: 实现角色校验（USER/ADMIN）与 401/403 统一处理
+  - [x] SubTask 2.4: 前端登录/注册页面与 Token 存储、路由守卫
+- [x] Task 3: 实现知识体系与题库管理模块：自关联分类树、题目 CRUD、组合筛选
+  - [x] SubTask 3.1: 建表（knowledge_category、question、tag、question_tag、question_knowledge）与实体
+  - [x] SubTask 3.2: 分类树查询与管理端维护接口
+  - [x] SubTask 3.3: 题目 CRUD 与"领域+方向+知识点+题型+难度"组合分页筛选
+  - [x] SubTask 3.4: 前端分类树与题目列表/筛选页面
+- [x] Task 4: 实现 AI 智能出题模块：结构化 Prompt、解析校验重试降级、指纹去重
+  - [x] SubTask 4.1: 接入 Spring AI，按四种题型编写结构化 Prompt 模板（外置可配置）
+  - [x] SubTask 4.2: DTO + Jackson 解析 AI 响应，字段校验与最多 3 次重试
+  - [x] SubTask 4.3: 题目指纹计算 + 唯一索引去重，失败时题库兜底抽题
+  - [x] SubTask 4.4: AI 出题接口（按用户限流）与前端出题入口
+- [x] Task 5: 实现在线练习与答题模块：创建练习、组题、作答、提交判分
+  - [x] SubTask 5.1: 建表（practice_record、answer_record）与实体
+  - [x] SubTask 5.2: 创建练习（题库/AI/自适应/错题重练四种模式）与组题逻辑
+  - [x] SubTask 5.3: 提交答案接口（客观题即时判分、(practiceId, questionId) 幂等）
+  - [x] SubTask 5.4: 前端答题页、结果页与解析展示
+- [x] Task 6: 实现 AI 评测模块：主观题按评分点评分并生成评语
+  - [x] SubTask 6.1: 建表（evaluation_result）与评测 Prompt 模板
+  - [x] SubTask 6.2: 主观题评测接口（结构化 JSON 输出、解析校验、失败标记待评测）
+  - [x] SubTask 6.3: 前端评测结果展示（得分、逐点命中、评语）
+- [ ] Task 7: 实现错题管理模块：自动收录、去重、筛选、重练
+  - [x] SubTask 7.1: 建表（wrong_question，(user_id, question_id) 唯一约束）
+  - [x] SubTask 7.2: 判错自动收录/更新、错题列表与移除、错题重练
+  - [x] SubTask 7.3: 前端错题本页面
+- [ ] Task 8: 实现学习能力分析与自适应训练模块
+  - [x] SubTask 8.1: 建表（knowledge_stat）并实现答题后统计更新
+  - [x] SubTask 8.2: 学习报告接口（领域正确率、掌握度、薄弱点 Top N、30 天趋势、训练建议）
+  - [x] SubTask 8.3: 自适应策略（滑动窗口正确率 + 连对连错 + 知识点错误率 → 难度调整）
+  - [x] SubTask 8.4: 前端学习报告页（ECharts 图表）
+- [ ] Task 9: 实现系统后台管理模块
+  - [x] SubTask 9.1: operation_log 表与操作日志切面
+  - [x] SubTask 9.2: 用户管理、题目审核上下架、日志查询接口与页面
+- [ ] Task 10: 测试与部署
+  - [ ] SubTask 10.1: 编写并执行核心测试用例（含越权、AI 降级、指纹去重、自适应策略）
+  - [ ] SubTask 10.2: Docker Compose 部署（MySQL + 后端 + Nginx）并验证
+
+# Task Dependencies
+- Task 2 depends on Task 1
+- Task 3 depends on Task 2
+- Task 4 depends on Task 3
+- Task 5 depends on Task 3
+- Task 6 depends on Task 5
+- Task 7 depends on Task 5
+- Task 8 depends on Task 5
+- Task 9 depends on Task 2
+- Task 10 depends on Task 4, Task 6, Task 7, Task 8, Task 9
+
+
+- [x] Task 11: 题库数据填充：从牛客网按领域采集专项练习题并入库
+  - [x] SubTask 11.1: 浏览器自动化采集（登录态 + 专项练习卡片 → 交卷 → submission 页结构化提取题干/选项/答案/官方解析/知识点）
+  - [x] SubTask 11.2: 数据清洗去重（250 道唯一题：234 单选 + 16 多选），题型按答案长度推断、领域标签按词典拆分映射
+  - [x] SubTask 11.3: 分类树扩展（编程语言/计算机基础/中间件/AI/框架技术 新增方向与知识点，共 102 节点）
+  - [x] SubTask 11.4: 题目入库（fingerprint SHA-256 防重）并挂载 question_knowledge（295 条关联）
+  - [x] SubTask 11.5: 组题逻辑增强：PAPER_BANK 关键词优先匹配分类名按知识点抽题，回退题干模糊匹配

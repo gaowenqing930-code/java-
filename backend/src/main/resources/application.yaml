@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: backend
+  servlet:
+    multipart:
+      # 简历文件上传限制
+      max-file-size: 10MB
+      max-request-size: 10MB
+  datasource:
+    # MySQL 数据源
+    url: "jdbc:mysql://localhost:3306/ai_interview_coach?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true"
+    username: root
+    # 数据库密码：读取环境变量 DB_PASSWORD（本地已通过系统环境变量配置，切勿在此写入明文）
+    password: "${DB_PASSWORD:}"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      # Redis 地址（Docker 容器 ai-redis，端口 6379）
+      host: localhost
+      port: 6379
+      timeout: 5s
+  ai:
+    # 火山方舟（Volcano Ark）OpenAI 兼容接口
+    openai:
+      base-url: https://ark.cn-beijing.volces.com/api/v3
+      # 火山引擎 API Key：读取环境变量 VOLC_API_KEY（本地已配置，切勿在此写入明文）
+      api-key: "${VOLC_API_KEY:}"
+      # 模型生成 10 道面试题较慢，放宽 HTTP 超时（Spring AI 2.x 属性为 spring.ai.openai.timeout）
+      timeout: 300s
+      chat:
+        options:
+          model: ep-20260925174043-zpql5   # 方舟推理接入点 ID（豆包模型）
+          temperature: 0.7                # 温度
+          max-tokens: 2048                # 单次生成最大 token 数
+
+server:
+  port: 8080
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    banner: false
+
+# JWT 配置
+jwt:
+  secret: "${JWT_SECRET:}"
+  expire-hours: 24
+
+# AI 出题配置
+ai:
+  generate:
+    max-retries: 3
+    rate-limit-per-minute: 5
+    fallback-max-count: 10
+    prompt-dir: ai/prompts
